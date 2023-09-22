@@ -34,6 +34,9 @@ ARGUMENTS = [
                           description='use_sim_time'),
     DeclareLaunchArgument('robot_name', default_value='turtlebot4',
                           description='Robot name'),
+    DeclareLaunchArgument('gazebo', default_value='classic',
+                          choices=['classic', 'ignition'],
+                          description='Which gazebo simulator to use'),                          
     DeclareLaunchArgument('namespace', default_value=LaunchConfiguration('robot_name'),
                           description='Robot namespace'),
 ]
@@ -45,6 +48,7 @@ def generate_launch_description():
                                        'urdf',
                                        LaunchConfiguration('model'),
                                        'turtlebot4.urdf.xacro'])
+    gazebo_simulator = LaunchConfiguration('gazebo')
     namespace = LaunchConfiguration('namespace')
 
     robot_state_publisher = Node(
@@ -56,7 +60,7 @@ def generate_launch_description():
             {'use_sim_time': LaunchConfiguration('use_sim_time')},
             {'robot_description': Command([
                 'xacro', ' ', xacro_file, ' ',
-                'gazebo:=ignition', ' ',
+                'gazebo:=', gazebo_simulator, ' ',
                 'namespace:=', namespace])},
         ],
         remappings=[
