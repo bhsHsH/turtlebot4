@@ -34,15 +34,37 @@
     <xacro:inertial_cuboid mass="0.17" x="${length_x}" y="${length_y}" z="${length_z}"/>
   </link>
 
-  <gazebo reference="${name}_link">
-    <xacro:ray_sensor sensor_name="${name}" gazebo="${gazebo}" 
-                  update_rate="62.0" visualize="1" 
-                  h_samples="640" h_res="1.0" h_min_angle="${-pi}" h_max_angle="${pi}" 
-                  r_min="0.164" r_max="12.0" r_res="0.01">
-                  <plugin name="dummy" filename="dummyfile"></plugin>
-    </xacro:ray_sensor>
-    <xacro:material_darkgray/>
-  </gazebo>
+  <xacro:if value="${gazebo == 'classic'}">
+    <gazebo reference="${name}_link">
+      <xacro:ray_sensor sensor_name="${name}" gazebo="${gazebo}" 
+                    update_rate="62.0" visualize="1" 
+                    h_samples="640" h_res="1.0" h_min_angle="${-pi}" h_max_angle="${pi}" 
+                    r_min="0.164" r_max="12.0" r_res="0.01">
+                    <!-- <plugin name="${name}" filename="libgazebo_ros_ray_sensor.so" >
+                      <ros>
+                        <namespace></namespace>
+                        <remapping>~/out:=/scan</remapping>                                                               
+                      </ros>
+                      <output_type>sensor_msgs/LaserScan</output_type>
+                      <frame_name>${name}_link</frame_name>
+                    </plugin> -->
+                    <plugin name="dummy" filename="dummyfile"></plugin>
+      </xacro:ray_sensor>  
+      <xacro:material_darkgray/>
+      </gazebo>
+  </xacro:if>
+
+  <xacro:if value="${gazebo == 'ignition'}">
+    <gazebo reference="${name}_link">
+      <xacro:ray_sensor sensor_name="${name}" gazebo="${gazebo}" 
+                    update_rate="62.0" visualize="1" 
+                    h_samples="640" h_res="1.0" h_min_angle="${-pi}" h_max_angle="${pi}" 
+                    r_min="0.164" r_max="12.0" r_res="0.01">
+                    <plugin name="dummy" filename="dummyfile"></plugin>
+      </xacro:ray_sensor>
+      <xacro:material_darkgray/>
+    </gazebo>
+  </xacro:if>
 
   <gazebo reference="${name}_joint">
     <preserveFixedJoint>true</preserveFixedJoint>
