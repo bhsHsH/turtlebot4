@@ -36,9 +36,11 @@
     </inertial>
   </link>
 
-  <gazebo reference="${joint_name}">
-    <preserveFixedJoint>true</preserveFixedJoint>
-  </gazebo>
+  <xacro:if value="${'$(arg gazebo)' == 'ignition'}">
+    <gazebo reference="${joint_name}">
+      <preserveFixedJoint>true</preserveFixedJoint>
+    </gazebo>
+  </xacro:if>
 
   <gazebo reference="${link_name}">
     <xacro:material_black/>
